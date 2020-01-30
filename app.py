@@ -32,8 +32,6 @@ def show_users():
     header = title
 
     users = db.session.query(User.id, User.first_name, User.last_name).all()
-
-    print(users)
     return render_template('users.html', title=title, header=header, users=users)
 
 @app.route('/users/new')
@@ -49,6 +47,9 @@ def process_new_user():
     last_name = request.form.get('last-name')
     image_url = request.form.get('image-url')
 
+    if image_url == '':
+        image_url = None
+
     new_user_record = User(first_name=first_name, last_name=last_name, image_url=image_url)
 
     db.session.add(new_user_record)
@@ -63,7 +64,7 @@ def show_user_detail(user_id):
     title = f"{selected_user.first_name} {selected_user.last_name}"
     header = title
     image_url = selected_user.image_url
-
+    
     return render_template('user_detail.html', title=title, header=header, image_url=image_url, user_id=user_id)
 
 @app.route('/users/<int:user_id>/edit')
