@@ -61,8 +61,7 @@ class UserTests(TestCase):
             resp = client.get(f'/users/{id}')
             html = resp.get_data(as_text=True)
 
-            self.assertEqual(resp.status_code, 404)      
-            self.assertNotIn('Jessica Lee', html)         
+            self.assertEqual(resp.status_code, 404)              
 
     def test_edit_user_form_populates(self):
         with self.client as client:
@@ -82,11 +81,4 @@ class UserTests(TestCase):
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn('Paige Godfrey', html)
-            self.assertNotIn('Jessica Lee', html)  
-    
-    # def test_invalid_user(self):
-    #     with self.client as client:
-
-    #         resp = client.get('users/g4hgf/edit')
-
-    #         self.      
+            self.assertNotIn('Jessica Lee', html)   

@@ -96,8 +96,13 @@ def process_delete_user(user_id):
 
     return redirect('/users') 
 
-# @app.route('users/<int:user_id>/posts/new')
-# def create_new_post: 
+@app.route('/users/<int:user_id>/posts/new')
+def create_new_post(user_id): 
+    selected_user = User.query.get_or_404(user_id)
+    first_name = selected_user.first_name
+    last_name = selected_user.last_name
+
+    return render_template('new_post.html', first_name=first_name, last_name=last_name, id=selected_user.id)
 
 # @app.route('users/<int:user_id>/posts/new', methods=['POST'])
 # def submit_new_post:

@@ -13,4 +13,17 @@ header %} {{header}} {% endblock %} {% block content %}
         </button>
     </form>
 </div>
+<div>
+    <h3>Posts</h3>
+    <ul>
+        {% for (id, post_name) in posts %}
+        <li><a href="/post/{{id}}">{{post_name}}</a></li>
+        {% endfor %}
+    </ul>
+    <button type="submit" class="btn btn-primary">
+        <a href="/users/{{user_id}}/posts/new" style="color: white">Add Post</a>
+    </button>
+
+</div>
+</div>
 {% endblock%}
