@@ -1,11 +1,13 @@
 {% extends 'base.html' %} {% block title %} {{title}} {% endblock %} {% block
-content %} {% block header %} {{header}} {% endblock %}
+header %} {{header}} {% endblock %} {% block content %}
 
 <div>
-    <img src="{{image-url }}" alt="" />
-    <form action="" method="post">
-        <button type="submit">Edit</button>
-        <button type="submit">Delete</button>
+    <img src="{{image_url}}" width="200px" alt="profile_pic" />
+    <button type="submit"><a href="/users/{{user_id}}/edit">Edit</a></button>
+    <form action="/users/{{user_id}}/delete" method="post">
+        <button type="submit">
+            Delete
+        </button>
     </form>
 </div>
 {% endblock%}

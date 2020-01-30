@@ -28,14 +28,16 @@ def root():
 
 @app.route('/users')
 def show_users():
-
     title = 'Users'
     header = title
-    return render_template('users.html', title=title, header=header)
+
+    users = db.session.query(User.id, User.first_name, User.last_name).all()
+
+    print(users)
+    return render_template('users.html', title=title, header=header, users=users)
 
 @app.route('/users/new')
 def add_new_user():
-
     title = 'Create a user'
     header = title
     return render_template('create_user.html', title=title, header=header)
@@ -43,29 +45,60 @@ def add_new_user():
 @app.route('/users/new', methods=["POST"])
 def process_new_user():
 
-    # request.form ...
-    return redirect('/users/new')
+    first_name = request.form.get('first-name')
+    last_name = request.form.get('last-name')
+    image_url = request.form.get('image-url')
 
-@app.route('/users/<int: user-id>')
-def show_user_detail():
+    new_user_record = User(first_name=first_name, last_name=last_name, image_url=image_url)
 
-    return render_template('user_detail.html')
+    db.session.add(new_user_record)
+    db.session.commit()
 
-@app.route('/users/<int: user-id>/edit')
-def edit_user_detail():
+    return redirect('/')
 
-    return render_template('user_edit.html')
+@app.route('/users/<int:user_id>')
+def show_user_detail(user_id):
 
-@app.route('/users/<int: user-id>/edit', methods=["POST"])
-def process_edit_user_detail():
+    selected_user = User.query.get(user_id)
+    title = f"{selected_user.first_name} {selected_user.last_name}"
+    header = title
+    image_url = selected_user.image_url
 
-    # request.form ...
+    return render_template('user_detail.html', title=title, header=header, image_url=image_url, user_id=user_id)
+
+@app.route('/users/<int:user_id>/edit')
+def edit_user_detail(user_id):
+
+    selected_user = User.query.get(user_id)
+    first_name = selected_user.first_name
+    last_name = selected_user.last_name
+    image_url = selected_user.image_url
+
+    return render_template('user_edit.html', first_name=first_name, last_name=last_name, image_url=image_url, user_id=user_id)
+
+@app.route('/users/<int:user_id>/edit', methods=["POST"])
+def process_edit_user_detail(user_id):
+
+    first_name = request.form.get('first-name')
+    last_name = request.form.get('last-name')
+    image_url = request.form.get('image-url')
+
+    selected_user = User.query.get(user_id)
+
+    selected_user.first_name = first_name
+    selected_user.last_name = last_name
+    selected_user.image_url = image_url
+
+    db.session.commit()
+
     return redirect('/users')
 
-@app.route('/users/<int: user-id>/delete', methods=["POST"])
-def process_delete_user():
+@app.route('/users/<int:user_id>/delete', methods=["POST"])
+def process_delete_user(user_id):
 
-    # request.form ...
-    return redirect('/users') # maybe somewhere else ?
+    User.query.filter(User.id==user_id).delete()
+    db.session.commit()
+
+    return redirect('/users') 
 
 
