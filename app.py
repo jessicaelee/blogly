@@ -29,20 +29,18 @@ def root():
 @app.route('/users')
 def show_users():
     title = 'Users'
-    header = title
-
+    
     users = db.session.query(User.id, User.first_name, User.last_name).all()
-    return render_template('users.html', title=title, header=header, users=users)
+    return render_template('users.html', title=title, header=title, users=users)
 
 @app.route('/users/new')
 def add_new_user():
     title = 'Create a user'
-    header = title
-    return render_template('create_user.html', title=title, header=header)
+    
+    return render_template('create_user.html', title=title, header=title)
 
 @app.route('/users/new', methods=["POST"])
 def process_new_user():
-
     first_name = request.form.get('first-name')
     last_name = request.form.get('last-name')
     image_url = request.form.get('image-url')
@@ -59,18 +57,16 @@ def process_new_user():
 
 @app.route('/users/<int:user_id>')
 def show_user_detail(user_id):
-
-    selected_user = User.query.get(user_id)
+    selected_user = User.query.get_or_404(user_id)
     title = f"{selected_user.first_name} {selected_user.last_name}"
-    header = title
+    
     image_url = selected_user.image_url
     
-    return render_template('user_detail.html', title=title, header=header, image_url=image_url, user_id=user_id)
+    return render_template('user_detail.html', title=title, header=title, image_url=image_url, user_id=user_id)
 
 @app.route('/users/<int:user_id>/edit')
 def edit_user_detail(user_id):
-
-    selected_user = User.query.get(user_id)
+    selected_user = User.query.get_or_404(user_id)
     first_name = selected_user.first_name
     last_name = selected_user.last_name
     image_url = selected_user.image_url
@@ -79,12 +75,11 @@ def edit_user_detail(user_id):
 
 @app.route('/users/<int:user_id>/edit', methods=["POST"])
 def process_edit_user_detail(user_id):
-
     first_name = request.form.get('first-name')
     last_name = request.form.get('last-name')
     image_url = request.form.get('image-url')
 
-    selected_user = User.query.get(user_id)
+    selected_user = User.query.get_or_404(user_id)
 
     selected_user.first_name = first_name
     selected_user.last_name = last_name
@@ -96,10 +91,23 @@ def process_edit_user_detail(user_id):
 
 @app.route('/users/<int:user_id>/delete', methods=["POST"])
 def process_delete_user(user_id):
-
     User.query.filter(User.id==user_id).delete()
     db.session.commit()
 
     return redirect('/users') 
+
+# @app.route('users/<int:user_id>/posts/new')
+# def create_new_post: 
+
+# @app.route('users/<int:user_id>/posts/new', methods=['POST'])
+# def submit_new_post:
+
+# @app.route('users/<int:user_id>/posts/new')
+# def create_new_post:
+
+
+
+
+
 
 
