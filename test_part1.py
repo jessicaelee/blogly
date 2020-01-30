@@ -26,3 +26,10 @@ class UserTests(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn('<a href="/users/10">test_first test_last</a>', html)
 
+    def test_check_deleted_user(self):
+        with app.test_client() as client:
+
+            resp = client.post('/users/<int:user_id>/delete', follow_redirects=True)
+
+             
+
