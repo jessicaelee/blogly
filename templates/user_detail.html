@@ -3,9 +3,11 @@ header %} {{header}} {% endblock %} {% block content %}
 
 <div>
     <img src="{{image_url}}" width="200px" alt="profile_pic" />
-    <button type="submit"><a href="/users/{{user_id}}/edit">Edit</a></button>
+    <button type="submit" class="btn btn-primary">
+        <a href="/users/{{user_id}}/edit">Edit</a>
+    </button>
     <form action="/users/{{user_id}}/delete" method="post">
-        <button type="submit">
+        <button type="submit" class="btn btn-danger">
             Delete
         </button>
     </form>

@@ -30,8 +30,10 @@ header %} {{header}} {% endblock %} {% block content %}
                 value="{{image_url}}"
             />
         </p>
-        <button type="submit"><a href="/users/{{user_id}}">Cancel</a></button>
-        <button type="submit">Save</button>
+        <button type="submit" class="btn btn-outline-success">
+            <a href="/users/{{user_id}}">Cancel</a>
+        </button>
+        <button type="submit" class="btn btn-success">Save</button>
     </form>
 </div>
 
