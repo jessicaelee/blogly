@@ -119,16 +119,41 @@ def process_new_post(user_id):
 
     return redirect(f'/users/{user_id}')
 
+@app.route('/posts/<int:post_id>')
+def show_post_detail(post_id):
+    selected_post = Post.query.get_or_404(post_id)
+    
+    title = selected_post.title
+    content = selected_post.content
 
-# @app.route('users/<int:user_id>/posts/new', methods=['POST'])
-# def submit_new_post:
+    user_id = selected_post.user_id_fk
 
-# @app.route('users/<int:user_id>/posts/new')
-# def create_new_post:
-
-
+    author = f'{User.query.get_or_404(user_id).first_name} {User.query.get_or_404(user_id).last_name}'
+    
+    return render_template('post_detail.html', title=title, header=title, content=content, author=author, user_id=user_id, post_id=post_id)
 
 
+@app.route('/posts/<int:post_id>/edit')
+def edit_post_detail(post_id):
+    selected_post = Post.query.get_or_404(post_id)
+    user_id = selected_post.user_id_fk
 
+    return render_template('post_edit.html', title='Edit Post', post_title=selected_post.title, content=selected_post.content, id=user_id, post_id=post_id)
 
+@app.route('/posts/<int:post_id>/edit', methods=["POST"])
+def process_edit_post_detail(post_id):
 
+    title = request.form.get('title')
+    content = request.form.get('content')
+
+    selected_post = Post.query.get_or_404(post_id)
+    selected_post.title = title
+    selected_post.content = content
+
+    db.session.commit()
+
+    return redirect(f'/posts/{post_id}')
+
+# TO DO - COMPLETE ROUTE
+# @app.route('/posts/<int:post_id>/delete', methods=["POST"])
+# def process_delete_post(post_id):

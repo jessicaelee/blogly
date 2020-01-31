@@ -1,0 +1,15 @@
+{% extends 'base.html' %} 
+
+{% block title %} {{title}} {% endblock %} 
+{% block header %} {{header}} {% endblock %} {% block content %}
+  <div>
+      <p>{{ content }}</p>
+      <p><i>By {{author}}</i></p>
+
+      <button class="btn btn-outline-primary"><a href="/users/{{user_id}}" style="color: blue">Cancel</a></button>
+      <button class="btn btn-primary"><a href="/posts/{{post_id}}/edit" style="color: white">Edit</a></button>
+      <form action="/posts/{{post_id}}/delete" method="post"></form>
+      <button class="btn btn-danger" style="color: white">Delete</button>
+  
+  </div>
+{% endblock%}

@@ -29,11 +29,3 @@ class Post(db.Model):
     user_id_fk = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     user = db.relationship('User')
-
-
-# CREATE TABLE users_tes (
-#     id SERIAL PRIMARY KEY,
-#     first_name TEXT NOT NULL,
-#     last_name TEXT NOT NULL,
-#     image_url TEXT DEFAULT 'https://www.axiumradonmitigations.com/wp-content/uploads/2015/01/icon-user-default.png'
-# )
