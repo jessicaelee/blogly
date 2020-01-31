@@ -1,7 +1,7 @@
 """Blogly application."""
 
 from flask import Flask, request, redirect, render_template
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 # from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
@@ -61,8 +61,10 @@ def show_user_detail(user_id):
     title = f"{selected_user.first_name} {selected_user.last_name}"
     
     image_url = selected_user.image_url
+
+    posts = Post.query.filter(Post.user_id_fk == user_id).all()
     
-    return render_template('user_detail.html', title=title, header=title, image_url=image_url, user_id=user_id)
+    return render_template('user_detail.html', title=title, header=title, image_url=image_url, user_id=user_id, posts=posts)
 
 @app.route('/users/<int:user_id>/edit')
 def edit_user_detail(user_id):
@@ -103,6 +105,20 @@ def create_new_post(user_id):
     last_name = selected_user.last_name
 
     return render_template('new_post.html', first_name=first_name, last_name=last_name, id=selected_user.id)
+
+@app.route('/users/<int:user_id>/posts/new', methods=["POST"])
+def process_new_post(user_id): 
+
+    title = request.form.get('title')
+    content = request.form.get('content')
+
+    new_post = Post(title=title, content=content, user_id_fk=user_id)
+
+    db.session.add(new_post)
+    db.session.commit()
+
+    return redirect(f'/users/{user_id}')
+
 
 # @app.route('users/<int:user_id>/posts/new', methods=['POST'])
 # def submit_new_post:
